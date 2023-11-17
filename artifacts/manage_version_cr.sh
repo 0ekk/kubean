@@ -7,14 +7,15 @@ set -eo pipefail
 
 OPTION=${1:-'create_localartifactset'} ## create_localartifactset  create_manifest
 
-MANIFEST_CR_NAME_POSTFIX=${MANIFEST_CR_NAME_POSTFIX:-""}
+CR_NAME_POSTFIX=${CR_NAME_POSTFIX:-""}
+KUBESPRAY_COMMIT_TIMESTAMP=${KUBESPRAY_COMMIT_TIMESTAMP:-""}
 
 KUBESPRAY_TAG=${KUBESPRAY_TAG:-"v2.19.0"} ## env from github action
 KUBEAN_TAG=${KUBEAN_TAG:-""}        ## env from github action
 KUBE_VERSION=${KUBE_VERSION:-""}
 
 CURRENT_DIR=$(cd $(dirname $0); pwd) ## artifacts dir
-CURRENT_DATE=$(date +%Y%m%d)
+CURRENT_TIME=$(date +%s)
 
 ARTIFACTS_TEMPLATE_DIR=artifacts/template
 KUBEAN_OFFLINE_VERSION_TEMPLATE=${ARTIFACTS_TEMPLATE_DIR}/localartifactset.template.yml
@@ -113,7 +114,13 @@ function create_offline_version_cr() {
 
   mkdir -p $OFFLINE_PACKAGE_DIR
   cp $KUBEAN_OFFLINE_VERSION_TEMPLATE $KUBEAN_OFFLINE_VERSION_CR
-  CR_NAME=offlineversion-${CURRENT_DATE} yq -i '.metadata.name=strenv(CR_NAME)' $KUBEAN_OFFLINE_VERSION_CR
+  if [ -n "${CR_NAME_POSTFIX}" ]; then
+    yq -i ".metadata.name=\"localartifactset-${CR_NAME_POSTFIX}\"" $KUBEAN_OFFLINE_VERSION_CR
+    yq -i ".metadata.labels.sprayRelease=\"${CR_NAME_POSTFIX%-*}\"" $KUBEAN_OFFLINE_VERSION_CR
+  else
+    yq -i ".metadata.name=\"localartifactset-${CURRENT_TIME}\"" $KUBEAN_OFFLINE_VERSION_CR
+    yq -i ".metadata.labels.sprayRelease=\"master\"" $KUBEAN_OFFLINE_VERSION_CR
+  fi
   KUBESPRAY_TAG=${KUBESPRAY_TAG} yq -i '.spec.kubespray=strenv(KUBESPRAY_TAG)' $KUBEAN_OFFLINE_VERSION_CR
 
   update_offline_version_cr "0" "cni" "$cni_version"
@@ -153,12 +160,15 @@ function update_docker_component_version() {
     $KUBEAN_INFO_MANIFEST_CR
 }
 
-function update_info_manifest_cr_name() {
-  if [ -n "${MANIFEST_CR_NAME_POSTFIX}" ]; then
-    yq -i ".metadata.name=\"kubeaninfomanifest-${MANIFEST_CR_NAME_POSTFIX}\"" $KUBEAN_INFO_MANIFEST_CR
+function update_info_manifest_cr_metadata() {
+  if [ -n "${CR_NAME_POSTFIX}" ]; then
+    yq -i ".metadata.name=\"manifest-${CR_NAME_POSTFIX}\"" $KUBEAN_INFO_MANIFEST_CR
+    yq -i ".metadata.labels.sprayRelease=\"${CR_NAME_POSTFIX%-*}\"" $KUBEAN_INFO_MANIFEST_CR
+    yq -i ".metadata.annotations.sprayTimestamp=\"${KUBESPRAY_COMMIT_TIMESTAMP}\"" $KUBEAN_INFO_MANIFEST_CR
   else
     kubean_version=${KUBEAN_TAG//./-}
-    yq -i ".metadata.name=\"kubeaninfomanifest-${kubean_version}\"" $KUBEAN_INFO_MANIFEST_CR
+    yq -i ".metadata.name=\"manifest-${kubean_version}\"" $KUBEAN_INFO_MANIFEST_CR
+    yq -i ".metadata.labels.sprayRelease=\"master\"" $KUBEAN_INFO_MANIFEST_CR
   fi
 }
 
@@ -201,7 +211,7 @@ function create_info_manifest_cr() {
   KUBESPRAY_TAG=${KUBESPRAY_TAG} yq -i '.spec.kubesprayVersion=strenv(KUBESPRAY_TAG)' $KUBEAN_INFO_MANIFEST_CR
   KUBEAN_TAG=${KUBEAN_TAG} yq -i '.spec.kubeanVersion=strenv(KUBEAN_TAG)' $KUBEAN_INFO_MANIFEST_CR
 
-  update_info_manifest_cr_name
+  update_info_manifest_cr_metadata
   update_info_manifest_cr 0 cni "${cni_version_default}" "${cni_version_range}"
   update_info_manifest_cr 1 containerd "${containerd_version_default}" "${containerd_version_range}"
   update_info_manifest_cr 2 kube "${kube_version_default}" "${kube_version_range}"
