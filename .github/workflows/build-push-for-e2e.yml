@@ -26,8 +26,7 @@ jobs:
         run: |
           ORGANIZATION_NAME=$(echo ${GITHUB_REPOSITORY}| awk -F "/" '{print $1}')
           echo "REPO=${ORGANIZATION_NAME,,}" >> ${GITHUB_ENV}
-          KUBESPRAY_VERSION=$(awk '/kubespray_version/ {printf("%.7s",$2)}' version.yml)
-          echo "KUBESPRAY_TAG=$(git tag | tail -1)" >> ${GITHUB_ENV}
+          echo "KUBESPRAY_TAG=$(awk '/kubespray_version/ {printf("%.7s",$2)}' version.yml)" >> ${GITHUB_ENV}
 
       - name: Echo env
         run: |
