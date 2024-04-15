@@ -76,12 +76,67 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://kubean-io.github.io/kubean/en/releases/v0.12.3/</loc>
+         <lastmod>2024-04-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://kubean-io.github.io/kubean/en/releases/v0.13.0/</loc>
          <lastmod>2024-04-15</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://kubean-io.github.io/kubean/en/releases/v0.13.1/</loc>
+         <lastmod>2024-04-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kubean-io.github.io/kubean/en/releases/v0.13.10/</loc>
+         <lastmod>2024-04-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kubean-io.github.io/kubean/en/releases/v0.13.2/</loc>
+         <lastmod>2024-04-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kubean-io.github.io/kubean/en/releases/v0.13.3/</loc>
+         <lastmod>2024-04-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kubean-io.github.io/kubean/en/releases/v0.13.4/</loc>
+         <lastmod>2024-04-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kubean-io.github.io/kubean/en/releases/v0.13.5/</loc>
+         <lastmod>2024-04-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kubean-io.github.io/kubean/en/releases/v0.13.6/</loc>
+         <lastmod>2024-04-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kubean-io.github.io/kubean/en/releases/v0.13.7/</loc>
+         <lastmod>2024-04-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kubean-io.github.io/kubean/en/releases/v0.13.8/</loc>
+         <lastmod>2024-04-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kubean-io.github.io/kubean/en/releases/v0.13.9/</loc>
+         <lastmod>2024-04-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kubean-io.github.io/kubean/en/releases/v0.14.0/</loc>
          <lastmod>2024-04-15</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -272,16 +327,6 @@
     </url>
     <url>
          <loc>https://kubean-io.github.io/kubean/en/releases/v0.9.3/</loc>
-         <lastmod>2024-04-15</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://kubean-io.github.io/kubean/en/releases/v0.9.4-rc1/</loc>
-         <lastmod>2024-04-15</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://kubean-io.github.io/kubean/en/releases/v0.9.4-rc2/</loc>
          <lastmod>2024-04-15</lastmod>
          <changefreq>daily</changefreq>
     </url>
