@@ -1,3 +1,5 @@
+ARG YQ_VERSION=4.45.4
+
 FROM oraclelinux:7.9 as os-centos7
 ARG OS_VERSION=7
 ARG BUILD_TOOLS="yum-utils createrepo wget"
@@ -14,7 +16,7 @@ RUN rm -rf /etc/yum.repos.d/{virt-ol7,uek-ol7,oracle-linux-ol7}.repo \
 
 WORKDIR /centos/$OS_VERSION/os
 COPY build/os-packages/packages.yml .
-COPY --from=mikefarah/yq:4.30.8 /usr/bin/yq /usr/bin/yq
+COPY --from=mikefarah/yq:${YQ_VERSION} /usr/bin/yq /usr/bin/yq
 RUN yq eval '.common[],.yum[],.centos7[]' packages.yml > packages.list
 
 RUN ARCH=$(uname -m) \

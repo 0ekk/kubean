@@ -1,11 +1,12 @@
 FROM openeuler/openeuler:22.03-lts as openeuler-system
 ARG OS_VERSION=22.03
 ARG BUILD_TOOLS="dnf-utils dnf-plugins-core createrepo wget"
+ARG YQ_VERSION=4.45.4
 
 WORKDIR /openeuler/${OS_VERSION}/os
 COPY build/os-packages/repos/openeuler_22.03.repo /etc/yum.repos.d/
 COPY build/os-packages/packages.yml .
-COPY --from=mikefarah/yq:4.30.8 /usr/bin/yq /usr/bin/yq
+COPY --from=mikefarah/yq:${YQ_VERSION} /usr/bin/yq /usr/bin/yq
 RUN yq eval '.common[],.yum[],.openeuler[]' packages.yml > packages.list
 
 RUN ARCH=$(uname -m) \

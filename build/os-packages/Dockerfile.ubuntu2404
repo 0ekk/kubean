@@ -2,6 +2,7 @@ FROM ubuntu:noble as os-noble
 ARG TARGETARCH
 ARG OS_VERSION=noble
 ARG DEP_PACKAGES="apt-transport-https ca-certificates curl wget gnupg dpkg-dev"
+ARG YQ_VERSION=4.45.4
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh \
     && ARCH=$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/') \
@@ -16,7 +17,7 @@ ARG PACKAGES_PREFIX=dists/${OS_VERSION}/main/binary-${TARGETARCH}
 
 COPY build/os-packages/packages.yml ./${PACKAGES_PREFIX}/packages.yml
 
-COPY --from=mikefarah/yq:4.45.3 /usr/bin/yq /usr/bin/yq
+COPY --from=mikefarah/yq:${YQ_VERSION} /usr/bin/yq /usr/bin/yq
 # The version of docker-ce-cli should be consistent with that of docker-ce.
 # See https://github.com/kubean-io/kubean/issues/1156
 RUN while read -r line; do \

@@ -1,11 +1,12 @@
 FROM rockylinux:8 as os-kylin-v10sp3
 ARG OS_VERSION=10
 ARG BUILD_TOOLS="dnf-utils dnf-plugins-core createrepo"
+ARG YQ_VERSION=4.45.4
 
 WORKDIR /kylin/${OS_VERSION}/sp3/os
 COPY build/os-packages/repos/kylin.sp3.repo /etc/yum.repos.d/
 COPY build/os-packages/packages.yml .
-COPY --from=mikefarah/yq:4.30.8 /usr/bin/yq /usr/bin/yq
+COPY --from=mikefarah/yq:${YQ_VERSION} /usr/bin/yq /usr/bin/yq
 RUN yq eval '.common[],.yum[],.kylin[]' packages.yml > packages.list
 
 RUN ARCH=$(uname -m) \

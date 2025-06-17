@@ -4,11 +4,12 @@ FROM rockylinux:8 as os-rocky8
 ARG OS_NAME
 ARG OS_VERSION=3.1
 ARG MODULES="container-tools"
+ARG YQ_VERSION=4.45.4
 
 WORKDIR /$OS_NAME/$OS_VERSION/os
 COPY build/os-packages/repos/tencentos.repo /tmp/
 COPY build/os-packages/packages.yml .
-COPY --from=mikefarah/yq:4.30.8 /usr/bin/yq /usr/bin/yq
+COPY --from=mikefarah/yq:${YQ_VERSION} /usr/bin/yq /usr/bin/yq
 RUN yq eval '.common[],.tencentos31[]' packages.yml > packages.list
 
 RUN ARCH=$(uname -m) \
